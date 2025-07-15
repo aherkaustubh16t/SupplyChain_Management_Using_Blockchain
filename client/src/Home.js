@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import "./Home.css";
 
 function Home() {
   const history = useHistory();
@@ -15,53 +16,89 @@ function Home() {
   const redirect_to_track = () => {
     history.push("/track");
   };
+
   return (
-    <div>
-      <h3>Supply Chain Flow :- </h3>
-      <br />
-      <h6>
-        (Note: Here <u>Owner</u> is the person who deployed the smart contract
-        on the blockchain)
-      </h6>
-      <h5>
-        Step 1: Owner Should Register Raw material suppliers ,Manufacturers,
-        Distributors and Retailers
-      </h5>
-      <h6>(Note: This is a one time step. Skip to step 2 if already done)</h6>
-      <button
-        onClick={redirect_to_roles}
-        className="btn btn-outline-primary btn-sm"
-      >
-        Register
-      </button>
-      <br />
-      <h5>Step 2: Owner should order goods</h5>
-      <button
-        onClick={redirect_to_addmed}
-        className="btn btn-outline-primary btn-sm"
-      >
-        Order Goods
-      </button>
-      <br />
-      <h5>Step 3: Control Supply Chain</h5>
-      <button
-        onClick={redirect_to_supply}
-        className="btn btn-outline-primary btn-sm"
-      >
-        Control Supply Chain
-      </button>
-      <br />
-      <hr />
-      <br />
-      <h5>
-        <b>Track</b> the goods:
-      </h5>
-      <button
-        onClick={redirect_to_track}
-        className="btn btn-outline-primary btn-sm"
-      >
-        Track Goods
-      </button>
+    <div className="home-container">
+      <div className="header">
+        <h2 className="title">Supply Chain Management System</h2>
+        <p className="subtitle">
+          Manage your Goods supply chain efficiently on the blockchain
+        </p>
+      </div>
+
+      <div className="note-box">
+        <p>
+          <strong>Note:</strong> Here <u>Owner</u> is the person who deployed the smart contract
+          on the blockchain
+        </p>
+      </div>
+
+      <div className="workflow">
+        <div className="step-card">
+          <div className="step-header">
+            <span className="step-number">1</span>
+            <h4 className="step-title">Register Supply Chain Participants</h4>
+          </div>
+          <p className="step-description">
+            Owner should register Raw Material Suppliers, Manufacturers,
+            Distributors and Retailers
+          </p>
+          <p className="step-note">
+            (Note: This is a one time step. Skip to step 2 if already done)
+          </p>
+          <button
+            onClick={redirect_to_roles}
+            className="step-button"
+          >
+            Register Participants
+          </button>
+        </div>
+
+        <div className="step-card">
+          <div className="step-header">
+            <span className="step-number">2</span>
+            <h4 className="step-title">Order Goods</h4>
+          </div>
+          <p className="step-description">
+            Owner should order goods to initiate the supply chain process
+          </p>
+          <button
+            onClick={redirect_to_addmed}
+            className="step-button"
+          >
+            Create Order
+          </button>
+        </div>
+
+        <div className="step-card">
+          <div className="step-header">
+            <span className="step-number">3</span>
+            <h4 className="step-title">Control Supply Chain</h4>
+          </div>
+          <p className="step-description">
+            Manage the flow of goods through the supply chain
+          </p>
+          <button
+            onClick={redirect_to_supply}
+            className="step-button"
+          >
+            Manage Supply Chain
+          </button>
+        </div>
+      </div>
+
+      <div className="track-section">
+        <h3 className="track-title">Track Goods in Supply Chain</h3>
+        <p className="track-description">
+          Monitor the movement and status of goods throughout the supply chain
+        </p>
+        <button
+          onClick={redirect_to_track}
+          className="track-button-outline"
+        >
+          Track Goods
+        </button>
+      </div>
     </div>
   );
 }

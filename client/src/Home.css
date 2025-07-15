@@ -1,0 +1,205 @@
+/* Background and base styles */
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e6f0ff 0%, #c9e2ff 50%, #a5d0ff 100%);
+  padding: 2rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header styles */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 98, 204, 0.1);
+}
+
+.title {
+  color: #1a3e72;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #0062cc 0%, #007bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #4a6fa5;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Note box */
+.note-box {
+  background: rgba(255, 255, 255, 0.9);
+  border-left: 4px solid #007bff;
+  padding: 1rem;
+  margin-bottom: 2.5rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 10px rgba(0, 98, 204, 0.1);
+}
+
+.note-box p {
+  margin: 0;
+  color: #3a5a80;
+  font-size: 0.95rem;
+}
+
+/* Workflow grid */
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.8rem;
+  margin-bottom: 3rem;
+}
+
+/* Step cards */
+.step-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.8rem;
+  box-shadow: 0 6px 20px rgba(0, 98, 204, 0.12);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 98, 204, 0.15);
+}
+
+.step-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #0062cc 0%, #007bff 100%);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.step-number {
+  background: linear-gradient(135deg, #007bff 0%, #0062cc 100%);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 98, 204, 0.2);
+}
+
+.step-title {
+  color: #1a3e72;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.step-description {
+  color: #4a6fa5;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.step-note {
+  color: #6b8cbc;
+  font-size: 0.85rem;
+  margin-bottom: 1.8rem;
+  font-style: italic;
+}
+
+/* Buttons */
+.step-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 500;
+  background: linear-gradient(90deg, #007bff 0%, #0062cc 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(0, 98, 204, 0.2);
+}
+
+.step-button:hover {
+  background: linear-gradient(90deg, #0062cc 0%, #0056b3 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 98, 204, 0.3);
+}
+
+/* Track section */
+.track-section {
+  text-align: center;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #007bff 0%, #0062cc 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 98, 204, 0.2);
+  color: white;
+}
+
+.track-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.track-description {
+  font-size: 1rem;
+  margin-bottom: 1.8rem;
+  opacity: 0.9;
+}
+
+.track-button-outline {
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.track-button-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .track-section {
+    padding: 1.8rem;
+  }
+}

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Web3 from "web3";
 import SupplyChainABI from "./artifacts/SupplyChain.json"
 import { useHistory } from "react-router-dom"
+import "./AssignRoles.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AssignRoles() {
     const history = useHistory()
@@ -84,224 +87,327 @@ function AssignRoles() {
             window.alert('The smart contract is not deployed to current network')
         }
     }
+
     if (loader) {
         return (
-            <div>
-                <h1 className="wait">Loading...</h1>
+            <div className="loader-container">
+                <div className="spinner"></div>
+                <h1 className="loading-text">Loading...</h1>
             </div>
         )
-
     }
+
     const redirect_to_home = () => {
         history.push('/')
     }
-    const handlerChangeAddressRMS = (event) => {
-        setRMSaddress(event.target.value);
-    }
-    const handlerChangePlaceRMS = (event) => {
-        setRMSplace(event.target.value);
-    }
-    const handlerChangeNameRMS = (event) => {
-        setRMSname(event.target.value);
-    }
-    const handlerChangeAddressMAN = (event) => {
-        setMANaddress(event.target.value);
-    }
-    const handlerChangePlaceMAN = (event) => {
-        setMANplace(event.target.value);
-    }
-    const handlerChangeNameMAN = (event) => {
-        setMANname(event.target.value);
-    }
-    const handlerChangeAddressDIS = (event) => {
-        setDISaddress(event.target.value);
-    }
-    const handlerChangePlaceDIS = (event) => {
-        setDISplace(event.target.value);
-    }
-    const handlerChangeNameDIS = (event) => {
-        setDISname(event.target.value);
-    }
-    const handlerChangeAddressRET = (event) => {
-        setRETaddress(event.target.value);
-    }
-    const handlerChangePlaceRET = (event) => {
-        setRETplace(event.target.value);
-    }
-    const handlerChangeNameRET = (event) => {
-        setRETname(event.target.value);
-    }
+
+    // Handler functions remain the same
+    const handlerChangeAddressRMS = (event) => { setRMSaddress(event.target.value); }
+    const handlerChangePlaceRMS = (event) => { setRMSplace(event.target.value); }
+    const handlerChangeNameRMS = (event) => { setRMSname(event.target.value); }
+    const handlerChangeAddressMAN = (event) => { setMANaddress(event.target.value); }
+    const handlerChangePlaceMAN = (event) => { setMANplace(event.target.value); }
+    const handlerChangeNameMAN = (event) => { setMANname(event.target.value); }
+    const handlerChangeAddressDIS = (event) => { setDISaddress(event.target.value); }
+    const handlerChangePlaceDIS = (event) => { setDISplace(event.target.value); }
+    const handlerChangeNameDIS = (event) => { setDISname(event.target.value); }
+    const handlerChangeAddressRET = (event) => { setRETaddress(event.target.value); }
+    const handlerChangePlaceRET = (event) => { setRETplace(event.target.value); }
+    const handlerChangeNameRET = (event) => { setRETname(event.target.value); }
+
     const handlerSubmitRMS = async (event) => {
         event.preventDefault();
         try {
-            var reciept = await SupplyChain.methods.addRMS(RMSaddress, RMSname, RMSplace).send({ from: currentaccount });
-            if (reciept) {
+            var receipt = await SupplyChain.methods.addRMS(RMSaddress, RMSname, RMSplace).send({ from: currentaccount });
+            if (receipt) {
+                toast.success('Raw Material Supplier added successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 loadBlockchaindata();
+
+                // Clear form
+                setRMSaddress('');
+                setRMSname('');
+                setRMSplace('');
             }
         }
         catch (err) {
-            alert("An error occured!!!")
+            toast.error(`Error: ${err.message}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     }
+
     const handlerSubmitMAN = async (event) => {
         event.preventDefault();
         try {
-            var reciept = await SupplyChain.methods.addManufacturer(MANaddress, MANname, MANplace).send({ from: currentaccount });
-            if (reciept) {
+            var receipt = await SupplyChain.methods.addManufacturer(MANaddress, MANname, MANplace).send({ from: currentaccount });
+            if (receipt) {
+                toast.success('Manufacturer added successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 loadBlockchaindata();
+                // Clear form
+                setMANaddress('');
+                setMANname('');
+                setMANplace('');
             }
         }
         catch (err) {
-            alert("An error occured!!!")
+            toast.error(`Error: ${err.message}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     }
+
     const handlerSubmitDIS = async (event) => {
         event.preventDefault();
         try {
-            var reciept = await SupplyChain.methods.addDistributor(DISaddress, DISname, DISplace).send({ from: currentaccount });
-            if (reciept) {
+            var receipt = await SupplyChain.methods.addDistributor(DISaddress, DISname, DISplace).send({ from: currentaccount });
+            if (receipt) {
+                toast.success('Distributor added successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 loadBlockchaindata();
+                // Clear form
+                setDISaddress('');
+                setDISname('');
+                setDISplace('');
             }
         }
         catch (err) {
-            alert("An error occured!!!")
+            toast.error(`Error: ${err.message}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     }
+
     const handlerSubmitRET = async (event) => {
         event.preventDefault();
         try {
-            var reciept = await SupplyChain.methods.addRetailer(RETaddress, RETname, RETplace).send({ from: currentaccount });
-            if (reciept) {
+            var receipt = await SupplyChain.methods.addRetailer(RETaddress, RETname, RETplace).send({ from: currentaccount });
+            if (receipt) {
+                toast.success('Retailer added successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 loadBlockchaindata();
+                // Clear form
+                setRETaddress('');
+                setRETname('');
+                setRETplace('');
             }
         }
         catch (err) {
-            alert("An error occured!!!")
+            toast.error(`Error: ${err.message}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     }
 
-
-
     return (
-        <div>
-            <span><b>Current Account Address:</b> {currentaccount}</span>
-            <span onClick={redirect_to_home} className="btn btn-outline-danger btn-sm">HOME</span>
-            <h4>Raw Material Suppliers:</h4>
-            <form onSubmit={handlerSubmitRMS}>
-                <input className="form-control-sm" type="text" onChange={handlerChangeAddressRMS} placeholder="Ethereum Address" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangeNameRMS} placeholder="Raw Material Supplier Name" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangePlaceRMS} placeholder="Based In" required />
-                <button className="btn btn-outline-success btn-sm" onSubmit={handlerSubmitRMS}>Register</button>
-            </form>
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Place</th>
-                        <th scope="col">Ethereum Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(RMS).map(function (key) {
-                        return (
-                            <tr key={key}>
-                                <td>{RMS[key].id}</td>
-                                <td>{RMS[key].name}</td>
-                                <td>{RMS[key].place}</td>
-                                <td>{RMS[key].addr}</td>
+        <div className="assign-roles-container">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+            <div className="header-section">
+                <div className="account-info">
+                    <span className="account-address"><b>Current Account:</b> {currentaccount}</span>
+                    <button onClick={redirect_to_home} className="home-btn">HOME</button>
+                </div>
+                <h1 className="page-title">Supply Chain Role Management</h1>
+            </div>
+
+            <div className="role-section">
+                <h2 className="role-title">Raw Material Suppliers</h2>
+                <form onSubmit={handlerSubmitRMS} className="role-form">
+                    <input className="form-input" type="text" onChange={handlerChangeAddressRMS} value={RMSaddress || ''} placeholder="Ethereum Address" required />
+                    <input className="form-input" type="text" onChange={handlerChangeNameRMS} value={RMSname || ''} placeholder="Supplier Name" required />
+                    <input className="form-input" type="text" onChange={handlerChangePlaceRMS} value={RMSplace || ''} placeholder="Location" required />
+                    <button className="submit-btn" type="submit">Register Supplier</button>
+                </form>
+                <div className="table-container">
+                    <table className="role-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Address</th>
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-            <h4>Manufacturers:</h4>
-            <form onSubmit={handlerSubmitMAN}>
-                <input className="form-control-sm" type="text" onChange={handlerChangeAddressMAN} placeholder="Ethereum Address" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangeNameMAN} placeholder="Manufacturer Name" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangePlaceMAN} placeholder="Based In" required />
-                <button className="btn btn-outline-success btn-sm" onSubmit={handlerSubmitMAN}>Register</button>
-            </form>
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Place</th>
-                        <th scope="col">Ethereum Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(MAN).map(function (key) {
-                        return (
-                            <tr key={key}>
-                                <td>{MAN[key].id}</td>
-                                <td>{MAN[key].name}</td>
-                                <td>{MAN[key].place}</td>
-                                <td>{MAN[key].addr}</td>
+                        </thead>
+                        <tbody>
+                            {Object.keys(RMS).map(function (key) {
+                                return (
+                                    <tr key={key}>
+                                        <td>{RMS[key].id}</td>
+                                        <td>{RMS[key].name}</td>
+                                        <td>{RMS[key].place}</td>
+                                        <td className="address-cell">{RMS[key].addr}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="role-section">
+                <h2 className="role-title">Manufacturers</h2>
+                <form onSubmit={handlerSubmitMAN} className="role-form">
+                    <input className="form-input" type="text" onChange={handlerChangeAddressMAN} value={MANaddress || ''} placeholder="Ethereum Address" required />
+                    <input className="form-input" type="text" onChange={handlerChangeNameMAN} value={MANname || ''} placeholder="Manufacturer Name" required />
+                    <input className="form-input" type="text" onChange={handlerChangePlaceMAN} value={MANplace || ''} placeholder="Location" required />
+                    <button className="submit-btn" type="submit">Register Manufacturer</button>
+                </form>
+                <div className="table-container">
+                    <table className="role-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Address</th>
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-            <h4>Distributors:</h4>
-            <form onSubmit={handlerSubmitDIS}>
-                <input className="form-control-sm" type="text" onChange={handlerChangeAddressDIS} placeholder="Ethereum Address" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangeNameDIS} placeholder="Distributor Name" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangePlaceDIS} placeholder="Based In" required />
-                <button className="btn btn-outline-success btn-sm" onSubmit={handlerSubmitDIS}>Register</button>
-            </form>
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Place</th>
-                        <th scope="col">Ethereum Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(DIS).map(function (key) {
-                        return (
-                            <tr key={key}>
-                                <td>{DIS[key].id}</td>
-                                <td>{DIS[key].name}</td>
-                                <td>{DIS[key].place}</td>
-                                <td>{DIS[key].addr}</td>
+                        </thead>
+                        <tbody>
+                            {Object.keys(MAN).map(function (key) {
+                                return (
+                                    <tr key={key}>
+                                        <td>{MAN[key].id}</td>
+                                        <td>{MAN[key].name}</td>
+                                        <td>{MAN[key].place}</td>
+                                        <td className="address-cell">{MAN[key].addr}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="role-section">
+                <h2 className="role-title">Distributors</h2>
+                <form onSubmit={handlerSubmitDIS} className="role-form">
+                    <input className="form-input" type="text" onChange={handlerChangeAddressDIS} value={DISaddress || ''} placeholder="Ethereum Address" required />
+                    <input className="form-input" type="text" onChange={handlerChangeNameDIS} value={DISname || ''} placeholder="Distributor Name" required />
+                    <input className="form-input" type="text" onChange={handlerChangePlaceDIS} value={DISplace || ''} placeholder="Location" required />
+                    <button className="submit-btn" type="submit">Register Distributor</button>
+                </form>
+                <div className="table-container">
+                    <table className="role-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Address</th>
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-            <h4>Retailers:</h4>
-            <form onSubmit={handlerSubmitRET}>
-                <input className="form-control-sm" type="text" onChange={handlerChangeAddressRET} placeholder="Ethereum Address" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangeNameRET} placeholder="Retailer Name" required />
-                <input className="form-control-sm" type="text" onChange={handlerChangePlaceRET} placeholder="Based In" required />
-                <button className="btn btn-outline-success btn-sm" onSubmit={handlerSubmitRET}>Register</button>
-            </form>
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Place</th>
-                        <th scope="col">Ethereum Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(RET).map(function (key) {
-                        return (
-                            <tr key={key}>
-                                <td>{RET[key].id}</td>
-                                <td>{RET[key].name}</td>
-                                <td>{RET[key].place}</td>
-                                <td>{RET[key].addr}</td>
+                        </thead>
+                        <tbody>
+                            {Object.keys(DIS).map(function (key) {
+                                return (
+                                    <tr key={key}>
+                                        <td>{DIS[key].id}</td>
+                                        <td>{DIS[key].name}</td>
+                                        <td>{DIS[key].place}</td>
+                                        <td className="address-cell">{DIS[key].addr}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="role-section">
+                <h2 className="role-title">Retailers</h2>
+                <form onSubmit={handlerSubmitRET} className="role-form">
+                    <input className="form-input" type="text" onChange={handlerChangeAddressRET} value={RETaddress || ''} placeholder="Ethereum Address" required />
+                    <input className="form-input" type="text" onChange={handlerChangeNameRET} value={RETname || ''} placeholder="Retailer Name" required />
+                    <input className="form-input" type="text" onChange={handlerChangePlaceRET} value={RETplace || ''} placeholder="Location" required />
+                    <button className="submit-btn" type="submit">Register Retailer</button>
+                </form>
+                <div className="table-container">
+                    <table className="role-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Address</th>
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            {Object.keys(RET).map(function (key) {
+                                return (
+                                    <tr key={key}>
+                                        <td>{RET[key].id}</td>
+                                        <td>{RET[key].name}</td>
+                                        <td>{RET[key].place}</td>
+                                        <td className="address-cell">{RET[key].addr}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     )
 }

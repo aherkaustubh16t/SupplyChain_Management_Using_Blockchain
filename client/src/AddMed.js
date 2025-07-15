@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Web3 from "web3";
 import SupplyChainABI from "./artifacts/SupplyChain.json";
+import "./AddMed.css"; // We'll create this CSS file
 
 function AddMed() {
   const history = useHistory();
@@ -60,22 +61,28 @@ function AddMed() {
       window.alert("The smart contract is not deployed to current network");
     }
   };
+
   if (loader) {
     return (
-      <div>
-        <h1 className="wait">Loading...</h1>
+      <div className="loader-container">
+        <div className="spinner"></div>
+        <h1 className="loading-text">Loading...</h1>
       </div>
     );
   }
+
   const redirect_to_home = () => {
     history.push("/");
   };
+
   const handlerChangeNameMED = (event) => {
     setMedName(event.target.value);
   };
+
   const handlerChangeDesMED = (event) => {
     setMedDes(event.target.value);
   };
+
   const handlerSubmitMED = async (event) => {
     event.preventDefault();
     try {
@@ -86,69 +93,80 @@ function AddMed() {
         loadBlockchaindata();
       }
     } catch (err) {
-      alert("An error occured!!!");
+      alert("An error occurred!!!");
     }
   };
+
   return (
-    <div>
-      <span>
-        <b>Current Account Address:</b> {currentaccount}
-      </span>
-      <span
-        onClick={redirect_to_home}
-        className="btn btn-outline-danger btn-sm"
-      >
-        {" "}
-        HOME
-      </span>
-      <br />
-      <h5>Add Goods Order:</h5>
-      <form onSubmit={handlerSubmitMED}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeNameMED}
-          placeholder="Goods Name"
-          required
-        />
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeDesMED}
-          placeholder="Goods Description"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitMED}
-        >
-          Order
-        </button>
-      </form>
-      <br />
-      <h5>Ordered Goods:</h5>
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Current Stage</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(MED).map(function (key) {
-            return (
-              <tr key={key}>
-                <td>{MED[key].id}</td>
-                <td>{MED[key].name}</td>
-                <td>{MED[key].description}</td>
-                <td>{MedStage[key]}</td>
+    <div className="add-med-container">
+      <div className="header-section">
+        <div className="account-info">
+          <span className="account-address"><b>Current Account:</b> {currentaccount}</span>
+          <button onClick={redirect_to_home} className="home-btn">HOME</button>
+        </div>
+        <h1 className="page-title">Goods Order Management</h1>
+      </div>
+
+      <div className="order-section">
+        <h2 className="section-title">Add New Goods Order</h2>
+        <form onSubmit={handlerSubmitMED} className="order-form">
+          <div className="form-group">
+            <label htmlFor="goodsName">Goods Name</label>
+            <input
+              id="goodsName"
+              className="form-input"
+              type="text"
+              onChange={handlerChangeNameMED}
+              placeholder="Enter goods name"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="goodsDescription">Goods Description</label>
+            <input
+              id="goodsDescription"
+              className="form-input"
+              type="text"
+              onChange={handlerChangeDesMED}
+              placeholder="Enter goods description"
+              required
+            />
+          </div>
+          <button className="submit-btn" type="submit">
+            Place Order
+          </button>
+        </form>
+      </div>
+
+      <div className="orders-section">
+        <h2 className="section-title">Current Orders</h2>
+        <div className="table-container">
+          <table className="orders-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Current Stage</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {Object.keys(MED).map(function (key) {
+                return (
+                  <tr key={key}>
+                    <td>{MED[key].id}</td>
+                    <td>{MED[key].name}</td>
+                    <td>{MED[key].description}</td>
+                    <td className={`stage-cell ${MedStage[key].toLowerCase().replace(/\s+/g, '-')}`}>
+                      {MedStage[key]}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

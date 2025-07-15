@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Web3 from "web3";
 import SupplyChainABI from "./artifacts/SupplyChain.json";
+import "./Supply.css"; // We'll create this CSS file
 
 function Supply() {
   const history = useHistory();
@@ -29,6 +30,7 @@ function Supply() {
       );
     }
   };
+
   const loadBlockchaindata = async () => {
     setloader(true);
     const web3 = window.web3;
@@ -58,229 +60,177 @@ function Supply() {
       window.alert("The smart contract is not deployed to current network");
     }
   };
+
   if (loader) {
     return (
-      <div>
-        <h1 className="wait">Loading...</h1>
+      <div className="loader-container">
+        <div className="spinner"></div>
+        <h1 className="loading-text">Loading...</h1>
       </div>
     );
   }
+
   const redirect_to_home = () => {
     history.push("/");
   };
+
   const handlerChangeID = (event) => {
     setID(event.target.value);
   };
-  const handlerSubmitRMSsupply = async (event) => {
-    event.preventDefault();
+
+  const handleStageAction = async (actionFunction) => {
     try {
-      var reciept = await SupplyChain.methods
-        .RMSsupply(ID)
-        .send({ from: currentaccount });
-      if (reciept) {
+      const receipt = await actionFunction(ID).send({ from: currentaccount });
+      if (receipt) {
         loadBlockchaindata();
       }
     } catch (err) {
-      alert("An error occured!!!");
+      alert("An error occurred: " + err.message);
     }
   };
-  const handlerSubmitManufacturing = async (event) => {
-    event.preventDefault();
-    try {
-      var reciept = await SupplyChain.methods
-        .Manufacturing(ID)
-        .send({ from: currentaccount });
-      if (reciept) {
-        loadBlockchaindata();
-      }
-    } catch (err) {
-      alert("An error occured!!!");
-    }
-  };
-  const handlerSubmitDistribute = async (event) => {
-    event.preventDefault();
-    try {
-      var reciept = await SupplyChain.methods
-        .Distribute(ID)
-        .send({ from: currentaccount });
-      if (reciept) {
-        loadBlockchaindata();
-      }
-    } catch (err) {
-      alert("An error occured!!!");
-    }
-  };
-  const handlerSubmitRetail = async (event) => {
-    event.preventDefault();
-    try {
-      var reciept = await SupplyChain.methods
-        .Retail(ID)
-        .send({ from: currentaccount });
-      if (reciept) {
-        loadBlockchaindata();
-      }
-    } catch (err) {
-      alert("An error occured!!!");
-    }
-  };
-  const handlerSubmitSold = async (event) => {
-    event.preventDefault();
-    try {
-      var reciept = await SupplyChain.methods
-        .sold(ID)
-        .send({ from: currentaccount });
-      if (reciept) {
-        loadBlockchaindata();
-      }
-    } catch (err) {
-      alert("An error occured!!!");
-    }
-  };
+
   return (
-    <div>
-      <span>
-        <b>Current Account Address:</b> {currentaccount}
-      </span>
-      <span
-        onClick={redirect_to_home}
-        className="btn btn-outline-danger btn-sm"
-      >
-        {" "}
-        HOME
-      </span>
-      <h6>
-        <b>Supply Chain Flow:</b>
-      </h6>
-      <p>
-        Goods Order -&gt; Raw Material Supplier -&gt; Manufacturer -&gt;
-        Distributor -&gt; Retailer -&gt; Consumer
-      </p>
-      <table className="table table-sm table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Goods ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Current Processing Stage</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(MED).map(function (key) {
-            return (
-              <tr key={key}>
-                <td>{MED[key].id}</td>
-                <td>{MED[key].name}</td>
-                <td>{MED[key].description}</td>
-                <td>{MedStage[key]}</td>
+    <div className="supply-container">
+      <div className="header-section">
+        <div className="account-info">
+          <span className="account-address"><b>Current Account:</b> {currentaccount}</span>
+          <button onClick={redirect_to_home} className="home-btn">HOME</button>
+        </div>
+        <h1 className="page-title">Supply Chain Flow Management</h1>
+      </div>
+
+      <div className="flow-diagram">
+        <div className="flow-steps">
+          <div className="flow-step">1. Goods Order</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">2. Raw Material Supply</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">3. Manufacturing</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">4. Distribution</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">5. Retail</div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">6. Consumer</div>
+        </div>
+      </div>
+
+      <div className="goods-section">
+        <h2 className="section-title">Current Goods in Supply Chain</h2>
+        <div className="table-container">
+          <table className="goods-table">
+            <thead>
+              <tr>
+                <th>Goods ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Current Stage</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <h5>
-        <b>Step 1: Supply Raw Materials</b>(Only a registered Raw Material
-        Supplier can perform this step):-
-      </h5>
-      <form onSubmit={handlerSubmitRMSsupply}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeID}
-          placeholder="Enter Goods ID"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitRMSsupply}
-        >
-          Supply
-        </button>
-      </form>
-      <hr />
-      <br />
-      <h5>
-        <b>Step 2: Manufacture</b>(Only a registered Manufacturer can perform
-        this step):-
-      </h5>
-      <form onSubmit={handlerSubmitManufacturing}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeID}
-          placeholder="Enter Goods ID"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitManufacturing}
-        >
-          Manufacture
-        </button>
-      </form>
-      <hr />
-      <br />
-      <h5>
-        <b>Step 3: Distribute</b>(Only a registered Distributor can perform this
-        step):-
-      </h5>
-      <form onSubmit={handlerSubmitDistribute}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeID}
-          placeholder="Enter Goods ID"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitDistribute}
-        >
-          Distribute
-        </button>
-      </form>
-      <hr />
-      <br />
-      <h5>
-        <b>Step 4: Retail</b>(Only a registered Retailer can perform this
-        step):-
-      </h5>
-      <form onSubmit={handlerSubmitRetail}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeID}
-          placeholder="Enter Goods ID"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitRetail}
-        >
-          Retail
-        </button>
-      </form>
-      <hr />
-      <br />
-      <h5>
-        <b>Step 5: Mark as sold</b>(Only a registered Retailer can perform this
-        step):-
-      </h5>
-      <form onSubmit={handlerSubmitSold}>
-        <input
-          className="form-control-sm"
-          type="text"
-          onChange={handlerChangeID}
-          placeholder="Enter Goods ID"
-          required
-        />
-        <button
-          className="btn btn-outline-success btn-sm"
-          onSubmit={handlerSubmitSold}
-        >
-          Sold
-        </button>
-      </form>
-      <hr />
+            </thead>
+            <tbody>
+              {Object.keys(MED).map(function (key) {
+                return (
+                  <tr key={key}>
+                    <td>{MED[key].id}</td>
+                    <td>{MED[key].name}</td>
+                    <td>{MED[key].description}</td>
+                    <td className={`stage-cell ${MedStage[key].toLowerCase().replace(/\s+/g, '-')}`}>
+                      {MedStage[key]}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="actions-section">
+        <div className="action-card">
+          <h3 className="action-title">Step 1: Supply Raw Materials</h3>
+          <p className="action-description">Only a registered Raw Material Supplier can perform this step</p>
+          <form onSubmit={(e) => { e.preventDefault(); handleStageAction(SupplyChain.methods.RMSsupply); }}>
+            <input
+              className="form-input"
+              type="text"
+              onChange={handlerChangeID}
+              placeholder="Enter Goods ID"
+              required
+            />
+            <button className="action-btn" type="submit">
+              Supply Materials
+            </button>
+          </form>
+        </div>
+
+        <div className="action-card">
+          <h3 className="action-title">Step 2: Manufacture</h3>
+          <p className="action-description">Only a registered Manufacturer can perform this step</p>
+          <form onSubmit={(e) => { e.preventDefault(); handleStageAction(SupplyChain.methods.Manufacturing); }}>
+            <input
+              className="form-input"
+              type="text"
+              onChange={handlerChangeID}
+              placeholder="Enter Goods ID"
+              required
+            />
+            <button className="action-btn" type="submit">
+              Manufacture
+            </button>
+          </form>
+        </div>
+
+        <div className="action-card">
+          <h3 className="action-title">Step 3: Distribute</h3>
+          <p className="action-description">Only a registered Distributor can perform this step</p>
+          <form onSubmit={(e) => { e.preventDefault(); handleStageAction(SupplyChain.methods.Distribute); }}>
+            <input
+              className="form-input"
+              type="text"
+              onChange={handlerChangeID}
+              placeholder="Enter Goods ID"
+              required
+            />
+            <button className="action-btn" type="submit">
+              Distribute
+            </button>
+          </form>
+        </div>
+
+        <div className="action-card">
+          <h3 className="action-title">Step 4: Retail</h3>
+          <p className="action-description">Only a registered Retailer can perform this step</p>
+          <form onSubmit={(e) => { e.preventDefault(); handleStageAction(SupplyChain.methods.Retail); }}>
+            <input
+              className="form-input"
+              type="text"
+              onChange={handlerChangeID}
+              placeholder="Enter Goods ID"
+              required
+            />
+            <button className="action-btn" type="submit">
+              Retail
+            </button>
+          </form>
+        </div>
+
+        <div className="action-card">
+          <h3 className="action-title">Step 5: Mark as Sold</h3>
+          <p className="action-description">Only a registered Retailer can perform this step</p>
+          <form onSubmit={(e) => { e.preventDefault(); handleStageAction(SupplyChain.methods.sold); }}>
+            <input
+              className="form-input"
+              type="text"
+              onChange={handlerChangeID}
+              placeholder="Enter Goods ID"
+              required
+            />
+            <button className="action-btn" type="submit">
+              Mark as Sold
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
